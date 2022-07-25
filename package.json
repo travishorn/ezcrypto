@@ -1,0 +1,30 @@
+{
+  "name": "ezcrypto",
+  "version": "1.0.0",
+  "description": "Easy encryption/decryption. Uses AES-256 and a 16 byte IV.",
+  "exports": "./index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "crypto",
+    "encryption",
+    "decryption",
+    "aes",
+    "aes256"
+  ],
+  "author": "Travis Horn <travis@travishorn.com> (https://travishorn.com/)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/travishorn/ezcrypto.git"
+  },
+  "bugs": {
+    "url": "https://github.com/travishorn/ezcrypto/issues"
+  },
+  "homepage": "https://github.com/travishorn/ezcrypto#readme",
+  "type": "module",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  }
+}
