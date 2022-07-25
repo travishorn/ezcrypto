@@ -2,6 +2,12 @@
 
 Easy encryption/decryption. Uses AES-256 and a 16 byte IV.
 
+## Installation
+
+```bash
+npm install @travishorn/ezcrypto
+```
+
 ## Usage
 
 Import the library
