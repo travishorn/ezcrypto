@@ -1,6 +1,6 @@
 # EZCrypto
 
-Easy encryption/decryption. Uses AES-256 and a 16 byte IV.
+Easy encryption/decryption for Node.js. Uses AES-256 and a 16 byte IV.
 
 ## Installation
 
@@ -26,6 +26,16 @@ Decrypt encrypted data
 
 ```javascript
 const decrypted = decrypt(encrypted, "my key");
+```
+
+## Testing
+
+Tests are written with Mocha in the `test.js` file.
+
+Run tests
+
+```bash
+npm test
 ```
 
 ## License
