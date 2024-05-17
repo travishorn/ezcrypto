@@ -1,26 +1,19 @@
 import {
-  randomBytes,
   createCipheriv,
   createDecipheriv,
   createHash,
+  randomBytes,
 } from "node:crypto";
 import Ajv from "ajv";
 
 const ajv = new Ajv();
 
-const algorithm = "aes-256-ctr";
-
-const validateArguments = (args, schema) => {
+function validateArguments(args, schema) {
   const validate = ajv.compile(schema);
-  const valid = validate(args);
-  if (!valid) throw validate.errors;
-};
+  if (!validate(args)) throw validate.errors;
+}
 
-const createKey = (buf) => {
-  return createHash("sha256").update(String(buf)).digest("base64").slice(0, 32);
-};
-
-export const encrypt = (plaintext, key) => {
+export function encrypt(plaintext, key) {
   validateArguments(
     { plaintext, key },
     {
@@ -33,17 +26,24 @@ export const encrypt = (plaintext, key) => {
     }
   );
 
+  const algorithm = "aes-256-cbc";
   const iv = randomBytes(16);
-  const cipher = createCipheriv(algorithm, createKey(key), iv);
-  const content = Buffer.concat([cipher.update(plaintext), cipher.final()]);
+  const cipher = createCipheriv(
+    algorithm,
+    createHash("sha256").update(key).digest(),
+    iv
+  );
+
   return {
     algorithm,
     iv: iv.toString("base64"),
-    content: content.toString("base64"),
+    content: Buffer.concat([cipher.update(plaintext), cipher.final()]).toString(
+      "base64"
+    ),
   };
-};
+}
 
-export const decrypt = (encrypted, key) => {
+export function decrypt(encrypted, key) {
   validateArguments(
     { encrypted, key },
     {
@@ -66,12 +66,12 @@ export const decrypt = (encrypted, key) => {
 
   const decipher = createDecipheriv(
     encrypted.algorithm,
-    createKey(key),
+    createHash("sha256").update(key).digest(),
     Buffer.from(encrypted.iv, "base64")
   );
-  const decrypted = Buffer.concat([
-    decipher.update(Buffer.from(encrypted.content, "base64")),
+
+  return Buffer.concat([
+    decipher.update(encrypted.content, "base64"),
     decipher.final(),
-  ]);
-  return decrypted.toString();
-};
+  ]).toString("utf8");
+}
